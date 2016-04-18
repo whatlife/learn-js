@@ -5,42 +5,42 @@
     <meta charset="UTF-8">
     <title>tab2 参数实现</title>
     <style>
-    .tab-wrapper {
-        overflow: hidden;
-        clear: both;
-        font-size: 14px;
-    }
+        .tab-wrapper {
+            overflow: hidden;
+            clear: both;
+            font-size: 14px;
+        }
 
-    .contents {
-        display: none;
-        top: -1px;
-        position: relative;
-        background: #fff;
-        border-top: 1px solid #ddd;
-        padding: 1em;
-    }
+        .contents {
+            display: none;
+            top: -1px;
+            position: relative;
+            background: #fff;
+            border-top: 1px solid #ddd;
+            padding: 1em;
+        }
 
-    .triggers {
-        padding: 3px 14px;
-        text-align: center;
-        display: inline-block;
-        cursor: pointer;
-        position: relative;
-        z-index: 1;
-        border: 1px solid transparent;
-    }
+        .triggers {
+            padding: 3px 14px;
+            text-align: center;
+            display: inline-block;
+            cursor: pointer;
+            position: relative;
+            z-index: 1;
+            border: 1px solid transparent;
+        }
 
-    .triggers.active {
-        color: red;
-        display: inline-block;
-        border: 1px solid #ddd;
-        background: #fff;
-        border-bottom: 1px solid transparent;
-    }
+        .triggers.active {
+            color: red;
+            display: inline-block;
+            border: 1px solid #ddd;
+            background: #fff;
+            border-bottom: 1px solid transparent;
+        }
 
-    .contents.active {
-        display: block;
-    }
+        .contents.active {
+            display: block;
+        }
     </style>
 </head>
 
@@ -78,13 +78,32 @@ $(function() {
         element: '.tab2',
         triggers: '.triggers',
         contents: '.contents'
-    })
+    });
+    tab({
+        element: '.tab22',
+        triggers: '.triggers',
+        contents: '.contents'
+    });
+
 });
 
 var tab = function(options) {
+
+    options = $.extend({
+        element: null,
+        triggers: '.triggers',
+        contents: '.contents'
+    }, options || {});
+
     var $wrapper = $(options.element);
+
+    if(!$wrapper.length) {
+        return null;
+    }
+
     var $triggers = $wrapper.find(options.triggers);
     var $contents = $wrapper.find(options.contents);
+    
     $triggers.each(function() {
         // 内容区域初始化显示
         if($(this).hasClass('active')) {
