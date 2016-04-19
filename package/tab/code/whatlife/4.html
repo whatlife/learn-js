@@ -118,7 +118,7 @@ var tab = function(options) {
 
         // 通过triggerType触发，默认是click
         var triggerType;
-        if(options.triggerType || options.triggerType === 'hover') {
+        if(options.triggerType === 'hover') {
             triggerType = 'hover';
         } else {
             triggerType = 'click';

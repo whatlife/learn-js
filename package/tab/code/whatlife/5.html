@@ -5,47 +5,47 @@
     <meta charset="UTF-8">
     <title>tab4 可配置点击切换时触发的函数</title>
     <style>
-    .tab-wrapper {
-        overflow: hidden;
-        clear: both;
-        font-size: 14px;
-    }
+        .tab-wrapper {
+            overflow: hidden;
+            clear: both;
+            font-size: 14px;
+        }
 
-    .contents {
-        display: none;
-        top: -1px;
-        position: relative;
-        background: #fff;
-        border-top: 1px solid #ddd;
-        padding: 1em;
-    }
+        .contents {
+            display: none;
+            top: -1px;
+            position: relative;
+            background: #fff;
+            border-top: 1px solid #ddd;
+            padding: 1em;
+        }
 
-    .triggers {
-        padding: 3px 14px;
-        text-align: center;
-        display: inline-block;
-        cursor: pointer;
-        position: relative;
-        z-index: 1;
-        border: 1px solid transparent;
-    }
+        .triggers {
+            padding: 3px 14px;
+            text-align: center;
+            display: inline-block;
+            cursor: pointer;
+            position: relative;
+            z-index: 1;
+            border: 1px solid transparent;
+        }
 
-    .triggers.active,
-    .triggers.ui-tab-active {
-        color: red;
-        display: inline-block;
-        border: 1px solid #ddd;
-        background: #fff;
-        border-bottom: 1px solid transparent;
-    }
+        .triggers.active,
+        .triggers.ui-tab-active {
+            color: red;
+            display: inline-block;
+            border: 1px solid #ddd;
+            background: #fff;
+            border-bottom: 1px solid transparent;
+        }
 
-    .contents.active {
-        display: block;
-    }
+        .contents.active {
+            display: block;
+        }
 
-    .ui-tab-active {
-        color: red;
-    }
+        .ui-tab-active {
+            color: red;
+        }
     </style>
 </head>
 
@@ -105,26 +105,37 @@ $(function() {
 });
 
 var tab = function(options) {
+
+    $.extend({
+        element: null,
+        triggers: '.triggers',
+        contents: '.contents',
+        activeIndex: 0,
+        activeTriggerClass: 'ui-tab-active',
+        onSwitch: function(index, count ) {
+
+        }
+    }, options || {});
+
     var $wrapper = $(options.element);
+
+    if(!$wrapper.length) return null;
+
     var $triggers = $wrapper.find(options.triggers);
     var $contents = $wrapper.find(options.contents);
+
     $triggers.each(function() {
 
         var count = $triggers.length;
 
-        if (!options.activeIndex) {
-            var _index = 0;
-            $triggers.eq(_index).addClass(options.activeTriggerClass);
-            $contents.eq(_index).addClass('active');
-        } else {
-            $triggers.eq(options.activeIndex).addClass(options.activeTriggerClass);
-            $contents.eq(options.activeIndex).addClass('active');
-        }
+   
+        $triggers.eq(options.activeIndex).addClass(options.activeTriggerClass);
+        $contents.eq(options.activeIndex).addClass('active');
 
         // 通过triggerType触发，默认是click
         var triggerType;
-        if (options.triggerType && options.triggerType === 'hover') {
-            triggerType = 'hover';
+        if (options.triggerType === 'hover') {
+            triggerType = 'mouseenter';
         } else {
             triggerType = 'click';
         }
@@ -135,9 +146,8 @@ var tab = function(options) {
             $(this).addClass(options.activeTriggerClass).siblings().removeClass(options.activeTriggerClass);
             $contents.eq(_index).addClass('active').siblings().removeClass('active');
 
-            options.onSwitch && options.onSwitch(_index, count);
-
-
+            // options.onSwitch && options.onSwitch(_index, count);
+            options.onSwitch.call(this, _index, count);
         });
     });
 }
